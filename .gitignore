@@ -8,3 +8,5 @@ venv/
 agent-v2/web/dist
 agent-v2/web/.wrangler
 **/.vite
+agent-template/
+agent-template
