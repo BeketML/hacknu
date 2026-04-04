@@ -1,0 +1,44 @@
+# Python deps: keep in sync with repo-root requirements.txt + aws-opentelemetry-distro line below.
+
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
+
+ENV UV_SYSTEM_PYTHON=1 \
+    UV_COMPILE_BYTECODE=1 \
+    UV_NO_PROGRESS=1 \
+    PYTHONUNBUFFERED=1 \
+    DOCKER_CONTAINER=1 \
+    AWS_REGION=eu-central-1 \
+    AWS_DEFAULT_REGION=eu-central-1 \
+    TLDRAW_MCP_ROOT=/workspace/app/tldraw_service \
+    REQUIRE_TLDRAW_DIST=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl gnupg \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt /tmp/requirements.txt
+RUN uv pip install -r /tmp/requirements.txt \
+    && uv pip install aws-opentelemetry-distro==0.12.2
+
+RUN useradd -m -u 1000 bedrock_agentcore \
+    && mkdir -p /workspace \
+    && chown bedrock_agentcore:bedrock_agentcore /workspace
+
+COPY app /workspace/app
+
+RUN chown -R bedrock_agentcore:bedrock_agentcore /workspace
+
+USER bedrock_agentcore
+WORKDIR /workspace/app/tldraw_service
+RUN npm ci && npm run build
+
+WORKDIR /workspace/app
+
+EXPOSE 9000
+EXPOSE 8000
+EXPOSE 8080
+
+CMD ["opentelemetry-instrument", "python", "-m", "main"]

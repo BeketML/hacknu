@@ -1,0 +1,21 @@
+{
+  "mode": {
+    "type": "mode",
+    "modeType": "working",
+    "partTypes": ["messages", "screenshot", "modelName", "mode"],
+    "actionTypes": ["message", "think", "create"]
+  },
+  "modelName": {
+    "type": "modelName",
+    "modelName": "claude-sonnet-4-5"
+  },
+  "messages": {
+    "type": "messages",
+    "agentMessages": ["Hello"],
+    "requestSource": "user"
+  },
+  "screenshot": {
+    "type": "screenshot",
+    "screenshot": ""
+  }
+}
