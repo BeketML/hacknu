@@ -9,6 +9,9 @@ from typing import Any
 
 import boto3
 
+# Cap agent completion length (was 8192; reduced by 4000 for cost/latency).
+AGENT_MAX_OUTPUT_TOKENS = 2048
+
 
 def _parse_data_url(data_url: str) -> tuple[str, bytes]:
     m = re.match(r"^data:([^;]+);base64,(.+)$", data_url, re.DOTALL)
@@ -79,7 +82,7 @@ def stream_bedrock(
         )
     body = {
         "anthropic_version": "bedrock-2023-05-31",
-        "max_tokens": 8192,
+        "max_tokens": AGENT_MAX_OUTPUT_TOKENS,
         "temperature": 0,
         "system": system_prompt,
         "messages": api_messages,
@@ -127,7 +130,7 @@ def stream_anthropic_api(
         )
     with client.messages.stream(
         model=model_id,
-        max_tokens=8192,
+        max_tokens=AGENT_MAX_OUTPUT_TOKENS,
         temperature=0,
         system=system_prompt,
         messages=api_messages,
@@ -178,7 +181,7 @@ def stream_openai(
     stream = oai.chat.completions.create(
         model=model_id,
         messages=oai_messages,
-        max_tokens=8192,
+        max_tokens=AGENT_MAX_OUTPUT_TOKENS,
         temperature=0,
         stream=True,
     )
@@ -222,7 +225,7 @@ def stream_google(
                     )
         contents.append(types.Content(role=grole, parts=parts_out))
     cfg_kwargs: dict[str, Any] = {
-        "max_output_tokens": 8192,
+        "max_output_tokens": AGENT_MAX_OUTPUT_TOKENS,
         "temperature": 0,
         "system_instruction": system_prompt,
     }

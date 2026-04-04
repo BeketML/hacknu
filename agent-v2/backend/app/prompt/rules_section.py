@@ -162,6 +162,12 @@ def build_rules_prompt_section(flags: dict) -> str:
                 flags["hasSelectedShapesPart"],
                 "- If the user has selected shape(s) and they refer to 'this', or 'these' in their request, they are probably referring to their selected shapes.",
             ),
+            flagged(
+                flags["hasGenerateImage"],
+                "- For photorealistic raster images or multi-slide presentation visuals, use the `generateImage` action "
+                '(mode `single` for one image, `deck` for several slides). Put the user request in `text`. '
+                "Do not try to approximate complex bitmaps using only vector shapes.",
+            ),
             "",
         ]
     )

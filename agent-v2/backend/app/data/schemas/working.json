@@ -607,8 +607,43 @@
               "_type": {
                 "$ref": "#/$defs/__schema103"
               },
-              "expression": {
+              "mode": {
                 "$ref": "#/$defs/__schema104"
+              },
+              "text": {
+                "$ref": "#/$defs/__schema105"
+              },
+              "numSlides": {
+                "$ref": "#/$defs/__schema106"
+              },
+              "boardId": {
+                "$ref": "#/$defs/__schema107"
+              },
+              "skipResearch": {
+                "$ref": "#/$defs/__schema108"
+              },
+              "intent": {
+                "$ref": "#/$defs/__schema109"
+              }
+            },
+            "required": [
+              "_type",
+              "mode",
+              "text",
+              "intent"
+            ],
+            "additionalProperties": false,
+            "title": "Generate image",
+            "description": "Generate raster images via the image pipeline. Use mode \"single\" for one image from a detailed visual prompt. Use mode \"deck\" for a multi-slide scenario (put the brief in text; optional numSlides, default 4). Requires GOOGLE_API_KEY on the server. Optional boardId matches server context/temporary/{boardId}/ for extra reference images. Prefer this over drawing complex bitmaps as vector shapes."
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_type": {
+                "$ref": "#/$defs/__schema110"
+              },
+              "expression": {
+                "$ref": "#/$defs/__schema111"
               }
             },
             "required": [
@@ -623,7 +658,7 @@
             "type": "object",
             "properties": {
               "_type": {
-                "$ref": "#/$defs/__schema105"
+                "$ref": "#/$defs/__schema112"
               }
             },
             "required": [
@@ -1427,12 +1462,38 @@
     },
     "__schema103": {
       "type": "string",
-      "const": "count"
+      "const": "generateImage"
     },
     "__schema104": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "single",
+        "deck"
+      ]
     },
     "__schema105": {
+      "type": "string"
+    },
+    "__schema106": {
+      "type": "number"
+    },
+    "__schema107": {
+      "type": "string"
+    },
+    "__schema108": {
+      "type": "boolean"
+    },
+    "__schema109": {
+      "type": "string"
+    },
+    "__schema110": {
+      "type": "string",
+      "const": "count"
+    },
+    "__schema111": {
+      "type": "string"
+    },
+    "__schema112": {
       "type": "string",
       "const": "unknown"
     }

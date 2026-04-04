@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import time
 from collections.abc import Iterator
@@ -17,6 +18,8 @@ from .models_config import get_agent_model_definition, is_valid_model_name
 from .prompt.build_messages import build_messages
 from .prompt.build_system_prompt import build_system_prompt
 from .prompt.get_model_name import get_model_name
+
+logger = logging.getLogger(__name__)
 
 
 def _text_stream_for_model(
@@ -49,10 +52,17 @@ def _text_stream_for_model(
 def stream_agent_actions(prompt: dict[str, Any]) -> Iterator[dict[str, Any]]:
     model_name = get_model_name(prompt)
     if not is_valid_model_name(model_name):
+        logger.warning("Invalid model name: %s", model_name)
         raise ValueError(f"Model {model_name} is not in AGENT_MODEL_DEFINITIONS")
 
     model_def = get_agent_model_definition(model_name)
     provider = model_def["provider"]
+    logger.info(
+        "Agent stream start model=%s provider=%s api_model_id=%s",
+        model_name,
+        provider,
+        model_def.get("id"),
+    )
 
     base_system = build_system_prompt(prompt)
     system_prompt = (
@@ -71,9 +81,9 @@ def stream_agent_actions(prompt: dict[str, Any]) -> Iterator[dict[str, Any]]:
     if isinstance(debug, dict):
         if debug.get("logSystemPrompt"):
             wo = build_system_prompt(prompt, with_schema=False)
-            print("[DEBUG] System Prompt (without schema):\n", wo)
+            logger.debug("System prompt (without schema): %s", wo)
         if debug.get("logMessages"):
-            print("[DEBUG] Messages:\n", json.dumps(build_messages(prompt), indent=2))
+            logger.debug("Messages: %s", json.dumps(build_messages(prompt), indent=2))
 
     use_assistant_prefill = provider != "bedrock"
     llm_messages: list[dict[str, Any]] = []

@@ -62,5 +62,6 @@ def get_system_prompt_flags(
         "hasTodoListPart": "todoList" in parts,
         "hasCanvasLintsPart": "canvasLints" in parts,
         "hasTimePart": "time" in parts,
+        "hasGenerateImage": "generateImage" in actions,
         "canEdit": any(_is_edit_action(t) for t in actions),
     }

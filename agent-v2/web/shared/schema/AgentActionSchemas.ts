@@ -372,6 +372,25 @@ export const UpdateAction = z
 	})
 
 export type UpdateAction = z.infer<typeof UpdateAction>
+
+export const GenerateImageAction = z
+	.object({
+		_type: z.literal('generateImage'),
+		mode: z.enum(['single', 'deck']),
+		text: z.string(),
+		numSlides: z.number().optional(),
+		boardId: z.string().optional(),
+		skipResearch: z.boolean().optional(),
+		intent: z.string(),
+	})
+	.meta({
+		title: 'Generate image',
+		description:
+			'Generate raster images via the image pipeline. Use mode "single" for one image from a detailed visual prompt. Use mode "deck" for a multi-slide scenario (put the brief in text; optional numSlides, default 4). Requires GOOGLE_API_KEY on the server. Optional boardId matches server context/temporary/{boardId}/ for extra reference images. Prefer this over drawing complex bitmaps as vector shapes.',
+	})
+
+export type GenerateImageAction = z.infer<typeof GenerateImageAction>
+
 // Unknown Action (catch-all for unrecognized actions)
 export const UnknownAction = z
 	.object({
