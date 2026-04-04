@@ -4,3 +4,7 @@
 node_modules
 liveblocks-mcp-server/
 venv/
+
+agent-v2/web/dist
+agent-v2/web/.wrangler
+**/.vite
