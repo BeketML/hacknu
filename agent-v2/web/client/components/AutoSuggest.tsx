@@ -7,9 +7,12 @@ import { useAgent } from '../agent/TldrawAgentAppProvider'
 /**
  * Watches for user-driven canvas changes (shapes added / updated / deleted).
  * After a quiet period it grabs a viewport screenshot and sends the prompt
- * "What would you suggest here" to the existing agent — no new agent created.
+ * to the existing agent — no new agent created.
+ *
+ * This is intentionally NOT exported so the file only exports React components,
+ * keeping Vite Fast Refresh happy.
  */
-export function useAutoSuggest(enabled: boolean) {
+function useAutoSuggest(enabled: boolean) {
   const agent = useAgent()
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 

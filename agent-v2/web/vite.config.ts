@@ -20,6 +20,7 @@ export default defineConfig(() => {
 		root: '.',
 		publicDir: 'public',
 		server: {
+			host: '0.0.0.0',
 			proxy: {
 				'/stream': {
 					target: process.env.VITE_AGENT_API ?? 'http://127.0.0.1:8000',
