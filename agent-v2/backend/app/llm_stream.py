@@ -19,7 +19,11 @@ _BEDROCK_RAW_LIMIT = _BEDROCK_B64_LIMIT * 3 // 4  # ≈3.75 MB raw bytes
 import boto3
 
 # Cap agent completion length (was 8192; reduced by 4000 for cost/latency).
-AGENT_MAX_OUTPUT_TOKENS = 2048
+# Must be large enough to accommodate thinking tokens + actual response.
+# Claude extended-thinking models consume thinking tokens from this budget;
+# 1024 was too small — the model exhausted the budget during thinking and
+# produced no text output at all.
+AGENT_MAX_OUTPUT_TOKENS = 20000
 
 
 def _parse_data_url(data_url: str) -> tuple[str, bytes]:
@@ -141,6 +145,7 @@ def stream_bedrock(
     system_prompt: str,
     messages: list[dict[str, Any]],
     region: str,
+    thinking_budget: int = 0,
 ) -> Iterator[str]:
     client = boto3.client(
         "bedrock-runtime",
@@ -159,13 +164,18 @@ def stream_bedrock(
                 "content": _to_anthropic_content_blocks(m["content"], compress_images=True),
             }
         )
-    body = {
+    body: dict[str, Any] = {
         "anthropic_version": "bedrock-2023-05-31",
         "max_tokens": AGENT_MAX_OUTPUT_TOKENS,
-        "temperature": 0,
         "system": system_prompt,
         "messages": api_messages,
     }
+    if thinking_budget > 0:
+        # Extended thinking requires temperature=1 and a budget_tokens field.
+        body["thinking"] = {"type": "enabled", "budget_tokens": thinking_budget}
+        body["temperature"] = 1
+    else:
+        body["temperature"] = 0
     response = client.invoke_model_with_response_stream(
         modelId=model_id,
         body=json.dumps(body),
@@ -180,12 +190,22 @@ def stream_bedrock(
         if not chunk:
             continue
         payload = json.loads(chunk.get("bytes", b"{}").decode("utf8"))
-        if payload.get("type") == "content_block_delta":
+        event_type = payload.get("type")
+        if event_type == "content_block_delta":
             delta = payload.get("delta") or {}
-            if delta.get("type") == "text_delta":
+            delta_type = delta.get("type")
+            if delta_type == "text_delta":
                 t = delta.get("text")
                 if t:
                     yield t
+            # thinking_delta → silently skip (thinking tokens, not output)
+            elif delta_type == "thinking_delta":
+                pass
+        elif event_type == "message_delta":
+            # Log stop reason to aid debugging
+            stop_reason = (payload.get("delta") or {}).get("stop_reason")
+            if stop_reason and stop_reason != "end_turn":
+                logger.warning("Bedrock stream ended with stop_reason=%s", stop_reason)
 
 
 def stream_anthropic_api(

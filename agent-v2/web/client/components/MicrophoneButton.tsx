@@ -306,6 +306,9 @@ export function MicrophoneButton() {
         },
       })
 
+      // Clear transcript history so it doesn't accumulate across requests
+      fullTranscriptRef.current = []
+
       setTimeout(resetTrigger, 1500)
     }
 
