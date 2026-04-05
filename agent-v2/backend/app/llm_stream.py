@@ -1,11 +1,20 @@
 from __future__ import annotations
 
 import base64
+import io
 import json
+import logging
 import os
 import re
 from collections.abc import Iterator
 from typing import Any
+
+logger = logging.getLogger(__name__)
+
+# Bedrock's hard limit on the **base64 data field** (the `data` string in source.base64).
+# Raw image bytes base64-encode at a 4/3 ratio, so the effective raw-byte ceiling is ≈3.75 MB.
+_BEDROCK_B64_LIMIT = 5 * 1024 * 1024  # 5 MB  (measured on the base64 string length)
+_BEDROCK_RAW_LIMIT = _BEDROCK_B64_LIMIT * 3 // 4  # ≈3.75 MB raw bytes
 
 import boto3
 
@@ -22,7 +31,73 @@ def _parse_data_url(data_url: str) -> tuple[str, bytes]:
     return media_type, raw
 
 
-def _to_anthropic_content_blocks(content: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _b64_size(raw: bytes) -> int:
+    """Return the length (in bytes) of the base64-encoded form of *raw*."""
+    # base64 encodes every 3 bytes as 4 chars, padded to a multiple of 4.
+    return (len(raw) + 2) // 3 * 4
+
+
+def _compress_image_if_needed(raw: bytes, media_type: str) -> tuple[bytes, str]:
+    """Recompress / resize *raw* image bytes until their base64 form is ≤ Bedrock's 5 MB limit.
+
+    Bedrock measures the **base64 string length** of the data field, not the raw byte count.
+    Returns (possibly compressed bytes, resulting media_type).
+    Falls back to the original bytes if Pillow is not installed.
+    """
+    if _b64_size(raw) <= _BEDROCK_B64_LIMIT:
+        return raw, media_type
+
+    try:
+        from PIL import Image  # type: ignore
+    except ImportError:
+        logger.warning(
+            "Image base64 is %.1f MB which exceeds Bedrock's 5 MB limit, "
+            "but Pillow is not installed so it cannot be compressed. "
+            "Install Pillow with: pip install pillow",
+            _b64_size(raw) / 1024 / 1024,
+        )
+        return raw, media_type
+
+    img = Image.open(io.BytesIO(raw))
+    # Convert to RGB so we can always save as JPEG regardless of source mode
+    if img.mode not in ("RGB", "L"):
+        img = img.convert("RGB")
+
+    original_b64_mb = _b64_size(raw) / 1024 / 1024
+    quality = 85
+    scale = 1.0
+    out_bytes = raw
+    out_media_type = "image/jpeg"
+
+    while _b64_size(out_bytes) > _BEDROCK_B64_LIMIT and (quality >= 40 or scale > 0.25):
+        buf = io.BytesIO()
+        w, h = img.size
+        new_w, new_h = max(int(w * scale), 1), max(int(h * scale), 1)
+        resized = img.resize((new_w, new_h), Image.LANCZOS)
+        resized.save(buf, format="JPEG", quality=quality, optimize=True)
+        out_bytes = buf.getvalue()
+
+        if _b64_size(out_bytes) > _BEDROCK_B64_LIMIT:
+            if quality >= 50:
+                quality -= 10
+            else:
+                scale *= 0.75
+                quality = 70  # reset quality after each spatial resize step
+
+    logger.info(
+        "Compressed image base64 %.1f MB → %.1f MB (quality=%d, scale=%.2f)",
+        original_b64_mb,
+        _b64_size(out_bytes) / 1024 / 1024,
+        quality,
+        scale,
+    )
+    return out_bytes, out_media_type
+
+
+def _to_anthropic_content_blocks(
+    content: list[dict[str, Any]],
+    compress_images: bool = False,
+) -> list[dict[str, Any]]:
     blocks: list[dict[str, Any]] = []
     for part in content:
         if part.get("type") == "image":
@@ -30,6 +105,10 @@ def _to_anthropic_content_blocks(content: list[dict[str, Any]]) -> list[dict[str
             if isinstance(img, str) and img.startswith("data:"):
                 head, b64 = img.split(",", 1)
                 media_type = head.split(":", 1)[1].split(";", 1)[0]
+                if compress_images and len(b64) > _BEDROCK_B64_LIMIT:
+                    raw = base64.b64decode(b64)
+                    raw, media_type = _compress_image_if_needed(raw, media_type)
+                    b64 = base64.b64encode(raw).decode("ascii")
                 blocks.append(
                     {
                         "type": "image",
@@ -77,7 +156,7 @@ def stream_bedrock(
         api_messages.append(
             {
                 "role": m["role"],
-                "content": _to_anthropic_content_blocks(m["content"]),
+                "content": _to_anthropic_content_blocks(m["content"], compress_images=True),
             }
         )
     body = {

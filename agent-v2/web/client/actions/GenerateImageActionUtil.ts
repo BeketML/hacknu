@@ -73,7 +73,7 @@ export const GenerateImageActionUtil = registerActionUtil(
 					res = await postJson<DeckResponse>('/api/image-gen/deck', {
 						brief: action.text,
 						num_slides: action.numSlides ?? 4,
-						board_id: action.boardId ?? null,
+						board_id: action.pageId ?? null,
 						skip_research: action.skipResearch ?? false,
 						research_depth: 'normal',
 						include_scenario: false,
@@ -81,7 +81,7 @@ export const GenerateImageActionUtil = registerActionUtil(
 				} else {
 					res = await postJson<SingleResponse>('/api/image-gen/single', {
 						prompt: action.text,
-						board_id: action.boardId ?? null,
+						board_id: action.pageId ?? null,
 					})
 				}
 

@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 
 from .agent_service import stream_agent_actions
 from .imagegen.routes import router as imagegen_router
+from .imagegen.context_routes import router as context_router
 from .logging_config import configure_logging
 from .request_logging_middleware import RequestLoggingMiddleware
 from .schemas.agent_prompt import AgentPromptModel, validated_prompt_to_dict
@@ -40,6 +41,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(title="agent-v2 backend", lifespan=lifespan)
 app.include_router(imagegen_router)
+app.include_router(context_router)
 
 app.add_middleware(
     CORSMiddleware,

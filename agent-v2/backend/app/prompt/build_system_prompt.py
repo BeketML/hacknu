@@ -18,6 +18,20 @@ def build_system_prompt(prompt: dict, *, with_schema: bool = True) -> str:
 
     lines = [build_intro_prompt_section(flags), build_rules_prompt_section(flags)]
 
+    # If the generateImage action is available and the caller sent a page ID,
+    # inject an explicit instruction so the model always populates pageId.
+    if "generateImage" in action_types:
+        current_page_id = prompt.get("currentPageId")
+        if current_page_id:
+            lines.append(
+                "## Image generation context\n\n"
+                f"The user is currently working on page `{current_page_id}`. "
+                "Whenever you use the `generateImage` action you MUST set "
+                f'`pageId` to `"{current_page_id}"`. '
+                "This loads the reference images the user has uploaded for this page "
+                "as visual context for the image generation.\n"
+            )
+
     if with_schema:
         schema = build_response_schema_dict(mode_part)
         lines.append(

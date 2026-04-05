@@ -15,6 +15,7 @@ import {
 } from './agent/TldrawAgentAppProvider'
 import { ChatPanel } from './components/ChatPanel'
 import { ChatPanelFallback } from './components/ChatPanelFallback'
+import { ContextSidebar } from './components/ContextSidebar'
 import { CustomHelperButtons } from './components/CustomHelperButtons'
 import { AgentViewportBoundsHighlights } from './components/highlights/AgentViewportBoundsHighlights'
 import { AllContextHighlights } from './components/highlights/ContextHighlights'
@@ -54,6 +55,7 @@ const overrides: TLUiOverrides = {
 
 function App() {
 	const [app, setApp] = useState<TldrawAgentApp | null>(null)
+	const [sidebarOpen, setSidebarOpen] = useState(true)
 
 	const handleUnmount = useCallback(() => {
 		setApp(null)
@@ -85,7 +87,11 @@ function App() {
 
 	return (
 		<TldrawUiToastsProvider>
-			<div className="tldraw-agent-container">
+			<div
+				className="tldraw-agent-container"
+				style={sidebarOpen ? undefined : { gridTemplateColumns: '0px 1fr 350px' }}
+			>
+				<ContextSidebar sidebarOpen={sidebarOpen} onSidebarOpenChange={setSidebarOpen} app={app} />
 				<div className="tldraw-canvas">
 					<Tldraw
 						persistenceKey="tldraw-agent-demo"

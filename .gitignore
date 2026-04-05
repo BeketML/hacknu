@@ -11,3 +11,5 @@ agent-v2/web/.wrangler
 agent-template/
 agent-template
 HackNU2026-ImageGen/
+*.venv/
+*.DS_Store

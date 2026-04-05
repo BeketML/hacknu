@@ -79,7 +79,10 @@ def load_context(board_id: str | None = None) -> dict:
 
     board_images: list[tuple[str, bytes]] = []
     if board_id:
-        board_dir = temp_dir / board_id
+        # Folder names use '__' in place of ':' (tldraw IDs contain colons
+        # which are not valid in filesystem paths on some OSes).
+        folder_name = board_id.replace(":", "__")
+        board_dir = temp_dir / folder_name
         board_images = _read_image_files(board_dir)
         style_texts += _read_text_files(board_dir)
 

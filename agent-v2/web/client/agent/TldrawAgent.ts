@@ -684,9 +684,11 @@ export class TldrawAgent {
 		signal: AbortSignal
 	}): AsyncGenerator<Streaming<AgentAction>> {
 		const streamUrl = import.meta.env.VITE_STREAM_URL ?? '/stream'
+		// Inject the current page ID so the backend can tell the AI which pageId to use
+		const promptWithPage = { ...prompt, currentPageId: this.editor.getCurrentPageId() }
 		const res = await fetch(streamUrl, {
 			method: 'POST',
-			body: JSON.stringify(prompt),
+			body: JSON.stringify(promptWithPage),
 			headers: {
 				'Content-Type': 'application/json',
 			},
