@@ -52,11 +52,12 @@ export class TldrawAgentApp {
 		editor: Editor,
 		public options: {
 			onError: (e: any) => void
+			collaborationRoomId?: string
 		}
 	) {
 		this._editor = editor
 		this.agents = new AgentAppAgentsManager(this)
-		this.persistence = new AgentAppPersistenceManager(this)
+		this.persistence = new AgentAppPersistenceManager(this, options.collaborationRoomId ?? 'default')
 		editor.on('crash', this.handleCrash)
 		editor.on('dispose', this.handleDispose)
 	}

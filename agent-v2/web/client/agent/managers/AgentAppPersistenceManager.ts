@@ -1,11 +1,22 @@
 import { react } from 'tldraw'
 import { PersistedAgentState, TldrawAgent } from '../TldrawAgent'
+import type { TldrawAgentApp } from '../TldrawAgentApp'
 import { BaseAgentAppManager } from './BaseAgentAppManager'
 
 /**
- * The key prefix used for localStorage persistence.
+ * The base key prefix used for localStorage persistence.
+ * Each collaboration room gets its own sub-namespace: `tldraw-agent-app:{roomSegment}:`.
  */
 const STORAGE_PREFIX = 'tldraw-agent-app'
+
+/**
+ * Encode a collaboration roomId into a string safe for localStorage key segments.
+ * Replaces % signs from encodeURIComponent to avoid key clashes.
+ */
+export function collaborationRoomIdForStorage(roomId: string): string {
+	const t = roomId.trim() || 'default'
+	return encodeURIComponent(t).replace(/%/g, '_').slice(0, 300)
+}
 
 /**
  * The persisted state for the entire app.
@@ -21,8 +32,14 @@ export interface PersistedAppState {
  * Coordinates loading and saving agent state to localStorage.
  * Calls agent-level serializeState() and loadState() methods
  * to handle the actual state serialization/deserialization.
+ *
+ * Agent chat history, todos and settings are scoped per collaboration room
+ * so switching rooms doesn't bleed state between sessions.
  */
 export class AgentAppPersistenceManager extends BaseAgentAppManager {
+	/** Full localStorage key prefix including room segment: `tldraw-agent-app:{room}`. */
+	readonly storageKeyPrefix: string
+
 	/**
 	 * Whether we're currently loading state to prevent premature saves.
 	 */
@@ -37,6 +54,12 @@ export class AgentAppPersistenceManager extends BaseAgentAppManager {
 	 * Cleanup functions for per-agent state watchers, keyed by agent ID.
 	 */
 	private agentWatcherCleanupFns = new Map<string, () => void>()
+
+	constructor(app: TldrawAgentApp, collaborationRoomId: string) {
+		super(app)
+		const seg = collaborationRoomIdForStorage(collaborationRoomId)
+		this.storageKeyPrefix = `${STORAGE_PREFIX}:${seg}`
+	}
 
 	/**
 	 * Check if state is currently being loaded.
@@ -200,14 +223,14 @@ export class AgentAppPersistenceManager extends BaseAgentAppManager {
 	// --- Helper methods ---
 
 	/**
-	 * Load a value from localStorage.
+	 * Load a value from localStorage (scoped to current room).
 	 */
 	private loadValue<T>(key: string): T | null {
 		const localStorage = globalThis.localStorage
 		if (!localStorage) return null
 
 		try {
-			const fullKey = `${STORAGE_PREFIX}:${key}`
+			const fullKey = `${this.storageKeyPrefix}:${key}`
 			const stored = localStorage.getItem(fullKey)
 			if (stored) {
 				return JSON.parse(stored) as T
@@ -220,14 +243,14 @@ export class AgentAppPersistenceManager extends BaseAgentAppManager {
 	}
 
 	/**
-	 * Save a value to localStorage.
+	 * Save a value to localStorage (scoped to current room).
 	 */
 	private saveValue<T>(key: string, value: T): void {
 		const localStorage = globalThis.localStorage
 		if (!localStorage) return
 
 		try {
-			const fullKey = `${STORAGE_PREFIX}:${key}`
+			const fullKey = `${this.storageKeyPrefix}:${key}`
 			localStorage.setItem(fullKey, JSON.stringify(value))
 		} catch {
 			console.warn(`Couldn't save ${key} to localStorage`)

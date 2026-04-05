@@ -8,6 +8,12 @@ const TldrawAgentAppContext = createContext<TldrawAgentApp | null>(null)
 export interface TldrawAgentAppProviderProps {
 	children?: ReactNode
 	/**
+	 * The collaboration room ID used to scope localStorage keys.
+	 * When using @tldraw/sync, pass the active roomId so agent state
+	 * (chat history, todos, etc.) is isolated per room.
+	 */
+	collaborationRoomId: string
+	/**
 	 * Callback fired when the app is created. Use this to pass the app
 	 * to components outside the Tldraw component via TldrawAgentAppContextProvider.
 	 */
@@ -53,6 +59,7 @@ export interface TldrawAgentAppProviderProps {
  */
 export const TldrawAgentAppProvider = memo(function TldrawAgentAppProvider({
 	children,
+	collaborationRoomId,
 	onMount,
 	onUnmount,
 }: TldrawAgentAppProviderProps) {
@@ -76,7 +83,7 @@ export const TldrawAgentAppProvider = memo(function TldrawAgentAppProvider({
 
 	// Create the TldrawAgentApp instance
 	useEffect(() => {
-		const instance = new TldrawAgentApp(editor, { onError: handleError })
+		const instance = new TldrawAgentApp(editor, { onError: handleError, collaborationRoomId })
 
 		// Load persisted state first (this will create agents from persisted data)
 		instance.persistence.loadState()
@@ -105,7 +112,7 @@ export const TldrawAgentAppProvider = memo(function TldrawAgentAppProvider({
 			delete (window as any).agent
 			delete (window as any).editor
 		}
-	}, [editor, handleError, onMount, onUnmount])
+	}, [editor, handleError, collaborationRoomId, onMount, onUnmount])
 
 	// Don't render children until app exists
 	if (!app) {

@@ -1476,3 +1476,146 @@ button.prompt-tag span {
 	background: var(--tl-color-primary);
 	color: white;
 }
+
+/* ---- Collaboration: tldraw canvas with room bar ---- */
+
+.tldraw-canvas--with-room-bar {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.tldraw-canvas__inner {
+	flex: 1;
+	min-height: 0;
+	position: relative;
+}
+
+/* ---- Collaboration: room bar ---- */
+
+.collab-room-bar {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 10px;
+	background: var(--tl-color-panel);
+	border-bottom: 1px solid var(--tl-color-divider);
+	flex-shrink: 0;
+	font-family: 'Inter', sans-serif;
+	font-size: 12px;
+	z-index: 10;
+}
+
+.collab-room-bar__label {
+	color: var(--tl-color-text-3);
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	white-space: nowrap;
+}
+
+.collab-room-bar__input {
+	flex: 1;
+	min-width: 0;
+	max-width: 280px;
+	padding: 3px 8px;
+	border: 1px solid var(--tl-color-divider);
+	border-radius: 5px;
+	background: var(--tl-color-background);
+	color: var(--tl-color-text);
+	font-family: 'Inter', sans-serif;
+	font-size: 12px;
+	outline: none;
+	transition: border-color 0.12s;
+}
+
+.collab-room-bar__input:focus {
+	border-color: var(--tl-color-primary);
+}
+
+.collab-room-bar__btn {
+	appearance: none;
+	border: 1px solid var(--tl-color-primary);
+	background: transparent;
+	color: var(--tl-color-primary);
+	font-family: 'Inter', sans-serif;
+	font-size: 11px;
+	font-weight: 600;
+	padding: 3px 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	white-space: nowrap;
+	transition: background 0.12s, color 0.12s;
+}
+
+.collab-room-bar__btn:hover {
+	background: var(--tl-color-primary);
+	color: white;
+}
+
+/* ---- Collaboration: connecting / error fullscreen ---- */
+
+.collab-connecting {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--tl-color-background, #fff);
+	font-family: 'Inter', sans-serif;
+	color: var(--tl-color-text, #1a1a1a);
+	z-index: 9999;
+}
+
+.collab-connecting__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+	text-align: center;
+	max-width: 360px;
+	padding: 24px;
+}
+
+.collab-connecting__inner p {
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.collab-connecting__detail {
+	font-size: 12px;
+	color: var(--tl-color-text-3, #888);
+}
+
+.collab-connecting__spinner {
+	width: 32px;
+	height: 32px;
+	border: 3px solid var(--tl-color-divider, #e2e2e2);
+	border-top-color: var(--tl-color-primary, #4a7cf6);
+	border-radius: 50%;
+	animation: collab-spin 0.7s linear infinite;
+}
+
+@keyframes collab-spin {
+	to { transform: rotate(360deg); }
+}
+
+.collab-connecting--error .collab-connecting__inner p:first-of-type {
+	color: #e53e3e;
+	font-weight: 600;
+}
+
+.collab-connecting--error button {
+	appearance: none;
+	border: 1px solid var(--tl-color-primary, #4a7cf6);
+	background: var(--tl-color-primary, #4a7cf6);
+	color: white;
+	font-family: 'Inter', sans-serif;
+	font-size: 13px;
+	font-weight: 600;
+	padding: 6px 16px;
+	border-radius: 6px;
+	cursor: pointer;
+	margin-top: 8px;
+}
