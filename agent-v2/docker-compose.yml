@@ -1,0 +1,48 @@
+services:
+  # ── Python FastAPI backend ────────────────────────────────────────────────
+  backend:
+    image: batyrbaev0520/agent-v2-backend:latest
+    container_name: agent_v2_backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env          # GOOGLE_API_KEY, ANTHROPIC_API_KEY, etc.
+    environment:
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - backend_data:/app/data  # persist generated files between restarts
+    ports:
+      - "8000:8000"             # expose for direct debug access (optional)
+    networks:
+      - agent_net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  web:
+    image: batyrbaev0520/agent-v2-web:latest
+    container_name: agent_v2_web
+    restart: unless-stopped
+    ports:
+      - "80:80"    # HTTP → redirects to HTTPS
+      - "443:443"  # HTTPS
+    volumes:
+      # Mount certs from host (created by certbot --dns-route53)
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      # Mount nginx.conf so you can update it without rebuilding the image
+      - ./web/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - agent_net
+
+volumes:
+  backend_data:
+
+networks:
+  agent_net:
+    driver: bridge
+

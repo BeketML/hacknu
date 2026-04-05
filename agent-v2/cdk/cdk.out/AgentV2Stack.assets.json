@@ -1,0 +1,21 @@
+{
+  "version": "53.0.0",
+  "files": {
+    "2f4fa1673704f87e4d3dcd3c30f51ba1d76b3db465cbf735bc9bc1af8ea3c17d": {
+      "displayName": "AgentV2Stack Template",
+      "source": {
+        "path": "AgentV2Stack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "147885311931-eu-central-1-845f4321": {
+          "bucketName": "cdk-hnb659fds-assets-147885311931-eu-central-1",
+          "objectKey": "2f4fa1673704f87e4d3dcd3c30f51ba1d76b3db465cbf735bc9bc1af8ea3c17d.json",
+          "region": "eu-central-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::147885311931:role/cdk-hnb659fds-file-publishing-role-147885311931-eu-central-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

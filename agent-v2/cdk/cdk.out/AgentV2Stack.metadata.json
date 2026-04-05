@@ -1,0 +1,308 @@
+{
+  "/AgentV2Stack/BackendService": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "minHealthyPercent has not been configured so the default value of 50% is used. The number of running tasks will decrease below the desired count during deployments etc. See https://github.com/aws/aws-cdk/issues/31705 [ack: @aws-cdk/aws-ecs:minHealthyPercent]",
+      "trace": [
+        "Annotations.addMessage (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2399)",
+        "Annotations.addWarningV2 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1087)",
+        "new BaseService2 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/aws-ecs/lib/base/base-service.js:1:12795)",
+        "new FargateService2 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/aws-ecs/lib/fargate/fargate-service.js:1:6805)",
+        "new FargateService2 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:855)",
+        "new AgentV2Stack (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/lib/agent-v2-stack.ts:133:28)",
+        "Object.<anonymous> (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/bin/app.ts:7:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/bin.ts:649:14)",
+        "bootstrap (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/bin.ts:95:10)",
+        "main (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/bin.ts:55:10)",
+        "Object.<anonymous> (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/AgentV2Stack/WebService": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "minHealthyPercent has not been configured so the default value of 50% is used. The number of running tasks will decrease below the desired count during deployments etc. See https://github.com/aws/aws-cdk/issues/31705 [ack: @aws-cdk/aws-ecs:minHealthyPercent]",
+      "trace": [
+        "Annotations.addMessage (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2399)",
+        "Annotations.addWarningV2 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1087)",
+        "new BaseService2 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/aws-ecs/lib/base/base-service.js:1:12795)",
+        "new FargateService2 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/aws-ecs/lib/fargate/fargate-service.js:1:6805)",
+        "new FargateService2 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:855)",
+        "new AgentV2Stack (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/lib/agent-v2-stack.ts:220:24)",
+        "Object.<anonymous> (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/bin/app.ts:7:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/bin.ts:649:14)",
+        "bootstrap (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/bin.ts:95:10)",
+        "main (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/bin.ts:55:10)",
+        "Object.<anonymous> (/Users/adiletbatyrbaev/Desktop/Batyrbayev_Adilet/SDU/HackNU2026/app/agent-v2/cdk/node_modules/ts-node/src/bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/AgentV2Stack/AlbDns": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AlbDns"
+    }
+  ],
+  "/AgentV2Stack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/AgentV2Stack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/AgentV2Stack/Vpc/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Vpc8378EB38"
+    }
+  ],
+  "/AgentV2Stack/Vpc/IGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcIGWD7BA715C"
+    }
+  ],
+  "/AgentV2Stack/Vpc/VPCGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcVPCGWBF912B6E"
+    }
+  ],
+  "/AgentV2Stack/Cluster/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEB0386A7"
+    }
+  ],
+  "/AgentV2Stack/Cluster/Cluster": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Cluster3DA9CCBA"
+    }
+  ],
+  "/AgentV2Stack/Namespace/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Namespace9B63B8C8"
+    }
+  ],
+  "/AgentV2Stack/ExecutionRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ExecutionRole605A040B"
+    }
+  ],
+  "/AgentV2Stack/BackendLogs/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BackendLogs21FC23BC"
+    }
+  ],
+  "/AgentV2Stack/WebLogs/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebLogs48A7C011"
+    }
+  ],
+  "/AgentV2Stack/BackendTaskRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BackendTaskRole65DD5890"
+    }
+  ],
+  "/AgentV2Stack/BackendTaskDef/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BackendTaskDef6ECE986E"
+    }
+  ],
+  "/AgentV2Stack/BackendSg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BackendSgD814DA87"
+    }
+  ],
+  "/AgentV2Stack/BackendSg/from AgentV2StackWebSg1659D054:8000": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BackendSgfromAgentV2StackWebSg1659D054800006C7306D"
+    }
+  ],
+  "/AgentV2Stack/BackendService/Service": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BackendService7A4224EE"
+    }
+  ],
+  "/AgentV2Stack/WebTaskDef/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebTaskDefDC37DBDB"
+    }
+  ],
+  "/AgentV2Stack/AlbSg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AlbSg1155C1BE"
+    }
+  ],
+  "/AgentV2Stack/Alb/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Alb16C2F182"
+    }
+  ],
+  "/AgentV2Stack/WebTg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebTg125381BD"
+    }
+  ],
+  "/AgentV2Stack/WebSg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebSg75AA54D5"
+    }
+  ],
+  "/AgentV2Stack/WebSg/from AgentV2StackAlbSg93948CB4:80": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebSgfromAgentV2StackAlbSg93948CB4809EADB459"
+    }
+  ],
+  "/AgentV2Stack/WebService/Service": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebService7F8A1763"
+    }
+  ],
+  "/AgentV2Stack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    }
+  ],
+  "/AgentV2Stack/Vpc/PublicSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1Subnet5C2D37C4"
+    }
+  ],
+  "/AgentV2Stack/Vpc/PublicSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1RouteTable6C95E38E"
+    }
+  ],
+  "/AgentV2Stack/Vpc/PublicSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1RouteTableAssociation97140677"
+    }
+  ],
+  "/AgentV2Stack/Vpc/PublicSubnet1/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1DefaultRoute3DA9E72A"
+    }
+  ],
+  "/AgentV2Stack/Vpc/PublicSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2Subnet691E08A3"
+    }
+  ],
+  "/AgentV2Stack/Vpc/PublicSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2RouteTable94F7E489"
+    }
+  ],
+  "/AgentV2Stack/Vpc/PublicSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2RouteTableAssociationDD5762D8"
+    }
+  ],
+  "/AgentV2Stack/Vpc/PublicSubnet2/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2DefaultRoute97F91067"
+    }
+  ],
+  "/AgentV2Stack/ExecutionRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ExecutionRoleDefaultPolicyA5B92313"
+    }
+  ],
+  "/AgentV2Stack/BackendTaskRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BackendTaskRoleDefaultPolicyD82ED08E"
+    }
+  ],
+  "/AgentV2Stack/BackendService/CloudmapService/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BackendServiceCloudmapService7E353D12"
+    }
+  ],
+  "/AgentV2Stack/WebTaskDef/TaskRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebTaskDefTaskRole73B79392"
+    }
+  ],
+  "/AgentV2Stack/Alb/Http/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AlbHttp7966E42E"
+    }
+  ],
+  "/AgentV2Stack/WebTaskDef/TaskRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebTaskDefTaskRoleDefaultPolicy1CD89E9F"
+    }
+  ]
+}

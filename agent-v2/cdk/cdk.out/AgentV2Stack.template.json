@@ -1,0 +1,1132 @@
+{
+ "Description": "ECS Fargate stack for agent-v2 (backend + web)",
+ "Resources": {
+  "Vpc8378EB38": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AgentV2Stack/Vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/Resource"
+   }
+  },
+  "VpcPublicSubnet1Subnet5C2D37C4": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-central-1a",
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "AgentV2Stack/Vpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/PublicSubnet1/Subnet"
+   }
+  },
+  "VpcPublicSubnet1RouteTable6C95E38E": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AgentV2Stack/Vpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "VpcPublicSubnet1RouteTableAssociation97140677": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
+    },
+    "SubnetId": {
+     "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "VpcPublicSubnet1DefaultRoute3DA9E72A": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "VpcIGWD7BA715C"
+    },
+    "RouteTableId": {
+     "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
+    }
+   },
+   "DependsOn": [
+    "VpcVPCGWBF912B6E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "VpcPublicSubnet2Subnet691E08A3": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-central-1b",
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "AgentV2Stack/Vpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/PublicSubnet2/Subnet"
+   }
+  },
+  "VpcPublicSubnet2RouteTable94F7E489": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AgentV2Stack/Vpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "VpcPublicSubnet2RouteTableAssociationDD5762D8": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "VpcPublicSubnet2RouteTable94F7E489"
+    },
+    "SubnetId": {
+     "Ref": "VpcPublicSubnet2Subnet691E08A3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "VpcPublicSubnet2DefaultRoute97F91067": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "VpcIGWD7BA715C"
+    },
+    "RouteTableId": {
+     "Ref": "VpcPublicSubnet2RouteTable94F7E489"
+    }
+   },
+   "DependsOn": [
+    "VpcVPCGWBF912B6E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "VpcIGWD7BA715C": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AgentV2Stack/Vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/IGW"
+   }
+  },
+  "VpcVPCGWBF912B6E": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "VpcIGWD7BA715C"
+    },
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Vpc/VPCGW"
+   }
+  },
+  "ClusterEB0386A7": {
+   "Type": "AWS::ECS::Cluster",
+   "Properties": {
+    "ClusterName": "agent-v2"
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Cluster/Resource"
+   }
+  },
+  "Cluster3DA9CCBA": {
+   "Type": "AWS::ECS::ClusterCapacityProviderAssociations",
+   "Properties": {
+    "CapacityProviders": [
+     "FARGATE",
+     "FARGATE_SPOT"
+    ],
+    "Cluster": {
+     "Ref": "ClusterEB0386A7"
+    },
+    "DefaultCapacityProviderStrategy": []
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Cluster/Cluster"
+   }
+  },
+  "Namespace9B63B8C8": {
+   "Type": "AWS::ServiceDiscovery::PrivateDnsNamespace",
+   "Properties": {
+    "Description": "Private DNS for agent-v2 services",
+    "Name": "agent.local",
+    "Vpc": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Namespace/Resource"
+   }
+  },
+  "ExecutionRole605A040B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/ExecutionRole/Resource"
+   }
+  },
+  "ExecutionRoleDefaultPolicyA5B92313": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":secretsmanager:eu-central-1:147885311931:secret:agent-v2/env-??????"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "BackendLogs21FC23BC",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "WebLogs48A7C011",
+          "Arn"
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ExecutionRoleDefaultPolicyA5B92313",
+    "Roles": [
+     {
+      "Ref": "ExecutionRole605A040B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "BackendLogs21FC23BC": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/ecs/agent-v2/backend",
+    "RetentionInDays": 14
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/BackendLogs/Resource"
+   }
+  },
+  "WebLogs48A7C011": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/ecs/agent-v2/web",
+    "RetentionInDays": 14
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/WebLogs/Resource"
+   }
+  },
+  "BackendTaskRole65DD5890": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": "bedrock:*",
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "BedrockAccess"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/BackendTaskRole/Resource"
+   }
+  },
+  "BackendTaskRoleDefaultPolicyD82ED08E": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents",
+        "ssmmessages:CreateControlChannel",
+        "ssmmessages:CreateDataChannel",
+        "ssmmessages:OpenControlChannel",
+        "ssmmessages:OpenDataChannel"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "BackendTaskRoleDefaultPolicyD82ED08E",
+    "Roles": [
+     {
+      "Ref": "BackendTaskRole65DD5890"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/BackendTaskRole/DefaultPolicy/Resource"
+   }
+  },
+  "BackendTaskDef6ECE986E": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "PYTHONUNBUFFERED",
+        "Value": "1"
+       }
+      ],
+      "Essential": true,
+      "HealthCheck": {
+       "Command": [
+        "CMD-SHELL",
+        "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')\""
+       ],
+       "Interval": 15,
+       "Retries": 5,
+       "StartPeriod": 30,
+       "Timeout": 5
+      },
+      "Image": "batyrbaev0520/agent-v2-backend:latest",
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "BackendLogs21FC23BC"
+        },
+        "awslogs-stream-prefix": "backend",
+        "awslogs-region": "eu-central-1"
+       }
+      },
+      "Name": "backend",
+      "PortMappings": [
+       {
+        "ContainerPort": 8000,
+        "Protocol": "tcp"
+       }
+      ],
+      "Secrets": [
+       {
+        "Name": "GOOGLE_API_KEY",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:eu-central-1:147885311931:secret:agent-v2/env:GOOGLE_API_KEY::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "PERPLEXITY_API_KEY",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:eu-central-1:147885311931:secret:agent-v2/env:PERPLEXITY_API_KEY::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "AWS_ACCESS_KEY_ID",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:eu-central-1:147885311931:secret:agent-v2/env:AWS_ACCESS_KEY_ID::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "AWS_SECRET_ACCESS_KEY",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:eu-central-1:147885311931:secret:agent-v2/env:AWS_SECRET_ACCESS_KEY::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "AWS_DEFAULT_REGION",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:eu-central-1:147885311931:secret:agent-v2/env:AWS_DEFAULT_REGION::"
+          ]
+         ]
+        }
+       }
+      ]
+     }
+    ],
+    "Cpu": "512",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "ExecutionRole605A040B",
+      "Arn"
+     ]
+    },
+    "Family": "AgentV2StackBackendTaskDefB2095BB1",
+    "Memory": "1024",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "BackendTaskRole65DD5890",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/BackendTaskDef/Resource"
+   }
+  },
+  "BackendSgD814DA87": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "agent-v2 backend",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": {
+       "Fn::GetAtt": [
+        "Vpc8378EB38",
+        "CidrBlock"
+       ]
+      },
+      "Description": "Allow VPC-internal traffic to backend",
+      "FromPort": 8000,
+      "IpProtocol": "tcp",
+      "ToPort": 8000
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/BackendSg/Resource"
+   }
+  },
+  "BackendSgfromAgentV2StackWebSg1659D054800006C7306D": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "web to backend",
+    "FromPort": 8000,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "BackendSgD814DA87",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "WebSg75AA54D5",
+      "GroupId"
+     ]
+    },
+    "ToPort": 8000
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/BackendSg/from AgentV2StackWebSg1659D054:8000"
+   }
+  },
+  "BackendService7A4224EE": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "CapacityProviderStrategy": [
+     {
+      "CapacityProvider": "FARGATE",
+      "Weight": 1
+     }
+    ],
+    "Cluster": {
+     "Ref": "ClusterEB0386A7"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "EnableExecuteCommand": true,
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "ENABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "BackendSgD814DA87",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
+       },
+       {
+        "Ref": "VpcPublicSubnet2Subnet691E08A3"
+       }
+      ]
+     }
+    },
+    "ServiceName": "agent-v2-backend",
+    "ServiceRegistries": [
+     {
+      "RegistryArn": {
+       "Fn::GetAtt": [
+        "BackendServiceCloudmapService7E353D12",
+        "Arn"
+       ]
+      }
+     }
+    ],
+    "TaskDefinition": {
+     "Ref": "BackendTaskDef6ECE986E"
+    }
+   },
+   "DependsOn": [
+    "BackendTaskRoleDefaultPolicyD82ED08E",
+    "BackendTaskRole65DD5890"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/BackendService/Service"
+   }
+  },
+  "BackendServiceCloudmapService7E353D12": {
+   "Type": "AWS::ServiceDiscovery::Service",
+   "Properties": {
+    "DnsConfig": {
+     "DnsRecords": [
+      {
+       "TTL": 10,
+       "Type": "A"
+      }
+     ],
+     "NamespaceId": {
+      "Fn::GetAtt": [
+       "Namespace9B63B8C8",
+       "Id"
+      ]
+     },
+     "RoutingPolicy": "MULTIVALUE"
+    },
+    "HealthCheckCustomConfig": {
+     "FailureThreshold": 1
+    },
+    "Name": "backend",
+    "NamespaceId": {
+     "Fn::GetAtt": [
+      "Namespace9B63B8C8",
+      "Id"
+     ]
+    }
+   },
+   "DependsOn": [
+    "BackendTaskRoleDefaultPolicyD82ED08E",
+    "BackendTaskRole65DD5890"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/BackendService/CloudmapService/Resource"
+   }
+  },
+  "WebTaskDefTaskRole73B79392": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/WebTaskDef/TaskRole/Resource"
+   }
+  },
+  "WebTaskDefTaskRoleDefaultPolicy1CD89E9F": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents",
+        "ssmmessages:CreateControlChannel",
+        "ssmmessages:CreateDataChannel",
+        "ssmmessages:OpenControlChannel",
+        "ssmmessages:OpenDataChannel"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "WebTaskDefTaskRoleDefaultPolicy1CD89E9F",
+    "Roles": [
+     {
+      "Ref": "WebTaskDefTaskRole73B79392"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/WebTaskDef/TaskRole/DefaultPolicy/Resource"
+   }
+  },
+  "WebTaskDefDC37DBDB": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "BACKEND_HOST",
+        "Value": "backend.agent.local"
+       }
+      ],
+      "Essential": true,
+      "Image": "batyrbaev0520/agent-v2-web:latest",
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "WebLogs48A7C011"
+        },
+        "awslogs-stream-prefix": "web",
+        "awslogs-region": "eu-central-1"
+       }
+      },
+      "Name": "web",
+      "PortMappings": [
+       {
+        "ContainerPort": 80,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "ExecutionRole605A040B",
+      "Arn"
+     ]
+    },
+    "Family": "AgentV2StackWebTaskDef299440C3",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "WebTaskDefTaskRole73B79392",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/WebTaskDef/Resource"
+   }
+  },
+  "AlbSg1155C1BE": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "ALB for agent-v2",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Public HTTP",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/AlbSg/Resource"
+   }
+  },
+  "Alb16C2F182": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Name": "agent-v2-alb",
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "AlbSg1155C1BE",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
+     },
+     {
+      "Ref": "VpcPublicSubnet2Subnet691E08A3"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "VpcPublicSubnet1DefaultRoute3DA9E72A",
+    "VpcPublicSubnet1RouteTableAssociation97140677",
+    "VpcPublicSubnet2DefaultRoute97F91067",
+    "VpcPublicSubnet2RouteTableAssociationDD5762D8"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Alb/Resource"
+   }
+  },
+  "AlbHttp7966E42E": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "WebTg125381BD"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "Alb16C2F182"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/Alb/Http/Resource"
+   }
+  },
+  "WebTg125381BD": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckIntervalSeconds": 30,
+    "HealthCheckPath": "/healthz",
+    "HealthyThresholdCount": 2,
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "deregistration_delay.timeout_seconds",
+      "Value": "30"
+     },
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "UnhealthyThresholdCount": 3,
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/WebTg/Resource"
+   }
+  },
+  "WebSg75AA54D5": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "agent-v2 web (nginx)",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/WebSg/Resource"
+   }
+  },
+  "WebSgfromAgentV2StackAlbSg93948CB4809EADB459": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "ALB to web container",
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "WebSg75AA54D5",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "AlbSg1155C1BE",
+      "GroupId"
+     ]
+    },
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/WebSg/from AgentV2StackAlbSg93948CB4:80"
+   }
+  },
+  "WebService7F8A1763": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "CapacityProviderStrategy": [
+     {
+      "CapacityProvider": "FARGATE",
+      "Weight": 1
+     }
+    ],
+    "Cluster": {
+     "Ref": "ClusterEB0386A7"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "EnableExecuteCommand": true,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LoadBalancers": [
+     {
+      "ContainerName": "web",
+      "ContainerPort": 80,
+      "TargetGroupArn": {
+       "Ref": "WebTg125381BD"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "ENABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "WebSg75AA54D5",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
+       },
+       {
+        "Ref": "VpcPublicSubnet2Subnet691E08A3"
+       }
+      ]
+     }
+    },
+    "ServiceName": "agent-v2-web",
+    "TaskDefinition": {
+     "Ref": "WebTaskDefDC37DBDB"
+    }
+   },
+   "DependsOn": [
+    "AlbHttp7966E42E",
+    "WebTaskDefTaskRoleDefaultPolicy1CD89E9F",
+    "WebTaskDefTaskRole73B79392"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/WebService/Service"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/32QTU/DMAyGf8vuWYCKAxzHENMkBNWGuCI39Yq3LKlip9NU9b+jNfsoH+Lkx6+d2H4znd3e6esR7Hhsys3YUqHbpYDZKNjxR4sm0+17bdR05d7zqcpjYcksY+FQDtqFFj4KvkFh8aJftAmzNwRC3p2bDzB3gsGhzEBwB/vjmGM2EQHzuUUnaokmBpL9LPhY9wP+FeauCsjcKTSs26mNLBgOXb9xCjUYkn0efEMlhsGmrJ4gVHA4gTePuCJHpwN+Kt4JkMMw0I5vlxgaMsmUhJ3iBCWx8Q2GvW7zQA0IPjp+gS1yDenFX/JfHxJsdbvwyfs+5t6S6f1M1CnrK9bts6/Olp24U2iBhYz1UBZgwRlyVZPpdlLXlkxvxrOH8qGvJfu+5cM+YkF37DnxoP4GoUI57zBIu04tkH0M6bjXKHWUTjlfol7zVZNl+uZeX4/WTDQO0QltUS9S/AK0uZnxyAIAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "AgentV2Stack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "AlbDns": {
+   "Description": "Open this URL in your browser",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "Alb16C2F182",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

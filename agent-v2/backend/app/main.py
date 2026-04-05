@@ -52,6 +52,11 @@ app.add_middleware(
 app.add_middleware(RequestLoggingMiddleware)
 
 
+@app.get("/healthz")
+def healthz():
+    return {"status": "ok"}
+
+
 @app.options("/stream")
 def stream_options():
     return JSONResponse(content=None, headers=dict(SSE_HEADERS))

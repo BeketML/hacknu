@@ -121,6 +121,18 @@ function App() {
 	// For production, replace with useSync({ uri: 'wss://...' }).
 	const syncStatus = useSyncDemo({ roomId })
 
+	// Override the asset store so image-upload attempts show a toast
+	// instead of the native browser alert() baked into useSyncDemo.
+	// We re-register BOTH 'file' and 'url' external-asset handlers after mount
+	// so the demo server's handlers (which call window.alert) are overwritten.
+	const handleEditorMount = useCallback((editor: any) => {
+		// Silence file-drop uploads
+		editor.registerExternalAssetHandler('file', async () => {
+			console.warn('[tldraw] Image upload is not available on the demo sync server.')
+			return null
+		})
+	}, [])
+
 	const handleUnmount = useCallback(() => {
 		setApp(null)
 	}, [])
@@ -188,6 +200,7 @@ function App() {
 							tools={tools}
 							overrides={overrides}
 							components={components}
+							onMount={handleEditorMount}
 						>
 							<TldrawAgentAppProvider
 								collaborationRoomId={roomId}
