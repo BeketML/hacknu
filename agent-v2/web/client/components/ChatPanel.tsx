@@ -2,6 +2,7 @@ import { FormEventHandler, useCallback, useRef } from 'react'
 import { useAgent } from '../agent/TldrawAgentAppProvider'
 import { ChatHistory } from './chat-history/ChatHistory'
 import { ChatInput } from './ChatInput'
+import { MicrophoneButton } from './MicrophoneButton'
 import { TodoList } from './TodoList'
 
 export function ChatPanel() {
@@ -44,6 +45,7 @@ export function ChatPanel() {
 	return (
 		<div className="chat-panel tl-theme__dark">
 			<div className="chat-header">
+				<MicrophoneButton />
 				<button className="new-chat-button" onClick={handleNewChat}>
 					+
 				</button>
