@@ -19,7 +19,7 @@ _BEDROCK_RAW_LIMIT = _BEDROCK_B64_LIMIT * 3 // 4  # ≈3.75 MB raw bytes
 import boto3
 
 # Cap agent completion length (was 8192; reduced by 4000 for cost/latency).
-AGENT_MAX_OUTPUT_TOKENS = 2048
+AGENT_MAX_OUTPUT_TOKENS = 20000
 
 
 def _parse_data_url(data_url: str) -> tuple[str, bytes]:

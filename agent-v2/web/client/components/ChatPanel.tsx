@@ -1,5 +1,6 @@
 import { FormEventHandler, useCallback, useRef } from 'react'
 import { useAgent } from '../agent/TldrawAgentAppProvider'
+import { AutoSuggestContainer } from './AutoSuggest'
 import { ChatHistory } from './chat-history/ChatHistory'
 import { ChatInput } from './ChatInput'
 import { MicrophoneButton } from './MicrophoneButton'
@@ -46,6 +47,7 @@ export function ChatPanel() {
 		<div className="chat-panel tl-theme__dark">
 			<div className="chat-header">
 				<MicrophoneButton />
+				<AutoSuggestContainer />
 				<button className="new-chat-button" onClick={handleNewChat}>
 					+
 				</button>
